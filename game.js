@@ -218,6 +218,7 @@ const state = {
   street: 'idle',    // idle|preflop|flop|turn|river|showdown
   running: false,
   humanResolver: null,
+  actingPlayerId: null,
   showEquity: false,
   muted: false,
   log: [],
@@ -225,6 +226,8 @@ const state = {
 };
 
 function newGame() {
+  state.actingPlayerId = null;
+  state.humanResolver = null;
   state.players = [];
   state.players.push({
     id: 0, name: '你', emoji: '😎', isHuman: true,
@@ -432,6 +435,7 @@ async function bettingRound(startIdx) {
     if (!p.inHand || p.folded || p.allin || p.out) continue;
     if (p.acted && p.bet === state.currentBet) continue;
 
+    state.actingPlayerId = p.id;
     render();
     if (p.isHuman) {
       await humanAction(p);
@@ -439,7 +443,10 @@ async function bettingRound(startIdx) {
       await sleep(500 + Math.random() * 700);
       await aiAction(p);
     }
+    state.actingPlayerId = null;
     render();
+    // 留出时间看清刚刚完成的行动，包括本街最后一次行动。
+    await sleep(650);
   }
 }
 
@@ -555,7 +562,7 @@ async function aiAction(p) {
 function humanAction(p) {
   return new Promise(resolve => {
     state.humanResolver = { p, resolve };
-    renderActions();
+    render();
     if (state.showEquity) updateEquityDisplay();
   });
 }
@@ -696,12 +703,12 @@ function maybeQuip(p, type, prob) {
 if (typeof document !== 'undefined') {
 
   const SEAT_POS = [
-    { x: 50, y: 86 },   // 玩家（底部）
-    { x: 11, y: 66 },
-    { x: 13, y: 22 },
-    { x: 50, y: 6 },
-    { x: 87, y: 22 },
-    { x: 89, y: 66 },
+    { x: 50, y: 73 },   // 玩家（底部），为提示与操作栏留出空间
+    { x: 13, y: 64 },
+    { x: 15, y: 25 },
+    { x: 50, y: 17 },
+    { x: 85, y: 25 },
+    { x: 87, y: 64 },
   ];
 
   /* ---------- 音效 ---------- */
@@ -746,15 +753,17 @@ if (typeof document !== 'undefined') {
 
   function render() {
     const seatsEl = document.getElementById('seats');
-    seatsEl.innerHTML = '';
-    const n = state.players.length;
-    const actingId = state.humanResolver ? 0 : -1;
 
     state.players.forEach((p, i) => {
       const pos = SEAT_POS[i];
-      const seat = document.createElement('div');
-      seat.className = 'seat';
-      seat.id = 'seat-' + p.id;
+      let seat = document.getElementById('seat-' + p.id);
+      if (!seat) {
+        seat = document.createElement('div');
+        seat.id = 'seat-' + p.id;
+        seat.innerHTML = '<div class="turn-label"></div><div class="hole"></div><div class="info"><div class="pname"></div><div class="chips"></div></div><div class="status" role="status" aria-live="polite"></div><div class="bet-chip"></div>';
+        seatsEl.appendChild(seat);
+      }
+      seat.className = 'seat' + (p.isHuman ? ' human' : '');
       seat.style.left = pos.x + '%';
       seat.style.top = pos.y + '%';
       if (p.out) seat.classList.add('out');
@@ -762,33 +771,25 @@ if (typeof document !== 'undefined') {
       if (state.street !== 'idle' && !p.out && !p.folded && isActing(p)) seat.classList.add('acting');
 
       const showFace = p.isHuman || p.revealed;
-      const cardsHtml = p.inHand && p.hole.length
-        ? `<div class="hole">${cardHTML(p.hole[0], !showFace, showFace && isHL(p.hole[0]))}${cardHTML(p.hole[1], !showFace, showFace && isHL(p.hole[1]))}</div>`
-        : `<div class="hole"></div>`;
+      renderCards(seat.querySelector('.hole'), p.inHand ? p.hole : [], !showFace);
 
       const dealerBtn = i === state.dealer && !p.out ? '<span class="dealer-btn">D</span>' : '';
-      const betHtml = p.bet > 0 ? `<div class="bet-chip">💰 ${p.bet}</div>` : '';
-      const status = p.out ? '出局' : p.lastAction || '';
-
-      seat.innerHTML = `
-        ${cardsHtml}
-        <div class="info">
-          <div class="pname">${p.emoji} ${p.name} ${dealerBtn}</div>
-          <div class="chips">🪙 ${p.chips}</div>
-          <div class="status">${status}</div>
-        </div>
-        ${betHtml}`;
-      seatsEl.appendChild(seat);
+      const status = p.out ? '已出局' : p.folded ? '已弃牌' : p.lastAction || '等待行动';
+      const nameEl = seat.querySelector('.pname');
+      const nameHTML = `${p.emoji} ${p.name} ${dealerBtn}`;
+      if (nameEl.innerHTML !== nameHTML) nameEl.innerHTML = nameHTML;
+      seat.querySelector('.chips').textContent = `🪙 ${p.chips}`;
+      seat.querySelector('.turn-label').textContent = isActing(p) ? (p.isHuman ? '▼ 轮到你了' : '▼ 正在行动') : '';
+      const statusEl = seat.querySelector('.status');
+      const label = isActing(p) ? (p.isHuman ? (state.currentBet > p.bet ? `需跟注 ${Math.min(state.currentBet - p.bet, p.chips)}` : '可以过牌') : '思考中…') : status;
+      if (statusEl.textContent !== label) statusEl.textContent = label;
+      statusEl.dataset.action = isActing(p) ? 'acting' : p.out || p.folded ? 'fold' : p.allin ? 'allin' : /跟注/.test(status) ? 'call' : /加注|下注/.test(status) ? 'raise' : /过牌/.test(status) ? 'check' : 'waiting';
+      seat.querySelector('.bet-chip').textContent = p.bet > 0 ? `已投入 ${p.bet}` : '';
     });
 
     // 公共牌
     const commEl = document.getElementById('community');
-    let html = '';
-    for (let i = 0; i < 5; i++) {
-      const c = state.community[i];
-      html += c ? cardHTML(c, false, isHL(c)) : '<div class="card slot"></div>';
-    }
-    commEl.innerHTML = html;
+    renderCards(commEl, Array.from({ length: 5 }, (_, i) => state.community[i]), false);
 
     // 底池 & 盲注
     document.getElementById('pot').textContent = state.street === 'idle' ? '' : `底池：${potTotal()}`;
@@ -812,8 +813,26 @@ if (typeof document !== 'undefined') {
   }
   window.render = render;
 
+  // 只替换新发出或翻开的牌；过牌、筹码更新及高亮均保留原 DOM 节点。
+  function renderCards(container, cards, faceDown) {
+    while (container.children.length > cards.length) container.lastElementChild.remove();
+    cards.forEach((c, i) => {
+      const key = c ? `${state.handNum}:${c.r}:${c.s}:${faceDown}` : 'slot';
+      let el = container.children[i];
+      if (!el || el.dataset.cardKey !== key) {
+        const template = document.createElement('template');
+        template.innerHTML = c ? cardHTML(c, faceDown, false) : '<div class="card slot"></div>';
+        const next = template.content.firstElementChild;
+        next.dataset.cardKey = key;
+        if (el) el.replaceWith(next); else container.appendChild(next);
+        el = next;
+      }
+      el.classList.toggle('hl', !!c && !faceDown && isHL(c));
+    });
+  }
+
   function isActing(p) {
-    return state.humanResolver && state.humanResolver.p === p;
+    return state.actingPlayerId === p.id && p.inHand && !p.out && !p.folded;
   }
   function streetName() {
     return { preflop: '翻牌前', flop: '翻牌', turn: '转牌', river: '河牌', showdown: '摊牌' }[state.street] || '';
