@@ -3,103 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="application-version" content="1.1.0">
-<title>德州扑克 v1.1 · Texas Hold'em</title>
-<link rel="stylesheet" href="style.css?v=1.1.0">
+<meta name="application-version" content="2.1.0">
+<title>棋牌大厅 · 德州 / 斗地主 / 斗牛 / 掼蛋</title>
+<link rel="stylesheet" href="css/common.css?v=2.1.0">
+<link rel="stylesheet" href="css/lobby.css?v=2.1.0">
 </head>
 <body>
-<div id="app">
-  <div id="table-wrap">
-    <div id="table"></div>
+<div id="lobby">
+  <header class="lb-head">
+    <div class="lb-logo">🎴 棋牌大厅</div>
+    <div class="lb-sub">德州扑克 · 斗地主 · 斗牛 · 掼蛋 —— 纯单机，和性格各异的 AI 过招</div>
+    <div class="lb-stars" id="lb-stars"></div>
+  </header>
 
-    <div id="center">
-      <div id="community"></div>
-      <div id="pot"></div>
-      <div id="blind-info"></div>
-    </div>
+  <nav class="lb-tabs">
+    <button class="lb-tab" data-tab="free">🎮 自由对局</button>
+    <button class="lb-tab" data-tab="campaign">🗺️ 闯关模式</button>
+  </nav>
 
-    <div id="seats"></div>
-    <div id="bubbles"></div>
-    <div id="banner"></div>
+  <section class="lb-pane" id="pane-free">
+    <h2 class="lb-h2">选择难度</h2>
+    <div class="lb-diffs" id="lb-diffs"></div>
+    <h2 class="lb-h2">选择游戏</h2>
+    <div class="lb-games" id="lb-games"></div>
+  </section>
 
-    <div id="equity"></div>
-    <div id="hand-hint"></div>
-
-    <div id="actions">
-      <button id="btn-fold">弃牌</button>
-      <button id="btn-check">过牌</button>
-      <button id="btn-call">跟注</button>
-      <div id="raise-box">
-        <input type="range" id="raise-slider" min="0" max="100" step="10">
-        <div class="quick-btns">
-          <button id="quick-half">半池</button>
-          <button id="quick-pot">满池</button>
-        </div>
-      </div>
-      <button id="btn-raise">加注</button>
-      <button id="btn-allin">全下</button>
-    </div>
-  </div>
-
-  <div id="side">
-    <h3>♠ 牌局记录</h3>
-    <div id="log"></div>
-    <div class="opts">
-      <label><input type="checkbox" id="chk-equity"> 📊 显示胜率（新手辅助）</label>
-      <label><input type="checkbox" id="chk-mute"> 🔇 静音</label>
-      <div class="keys">快捷键：F 弃牌 · C 过牌/跟注 · R 加注</div>
-    </div>
-    <button id="btn-rules">📖 玩法说明</button>
-  </div>
+  <section class="lb-pane" id="pane-campaign">
+    <p class="lb-tip">16 个关卡分四章，难度逐级提升，部分关卡带有特殊规则。过关即可解锁下一关，满足额外条件可拿满 ⭐⭐⭐。</p>
+    <div id="lb-chapters"></div>
+    <div class="lb-reset"><button class="hub-btn gray" id="lb-reset">重置闯关进度</button></div>
+  </section>
 </div>
 
-<!-- 开始界面 -->
-<div class="overlay" id="start-screen">
-  <div class="panel">
-    <h1>♠♥ 德州扑克锦标赛 ♦♣</h1>
-    <p>你和 5 位性格迥异的对手同桌，每人 2000 筹码。<br>
-    盲注每 8 手上涨一次，输光筹码就出局 —— 活到最后就是冠军！</p>
-    <div class="villains">
-      <div class="v"><div class="e">🦊</div><div class="n">老狐狸</div><div class="d">紧凶老手，出手必有好牌？也可能在下套…</div></div>
-      <div class="v"><div class="e">🐺</div><div class="n">疯狗阿豪</div><div class="d">什么牌都敢玩，诈唬成瘾，小心他梭哈</div></div>
-      <div class="v"><div class="e">🗿</div><div class="n">石头哥</div><div class="d">极度保守，他加注了就快跑</div></div>
-      <div class="v"><div class="e">🤓</div><div class="n">教授</div><div class="d">全靠数学，赔率不对绝不跟注</div></div>
-      <div class="v"><div class="e">🐱</div><div class="n">甜甜</div><div class="d">好奇宝宝，什么牌都想跟着看看</div></div>
-    </div>
-    <p style="font-size:12.5px;color:#8b93a0">新手？开局后勾选侧栏的「显示胜率」，会实时告诉你这手牌的赢面。</p>
-    <button class="big-btn" id="btn-start">开始游戏 🎲</button>
-  </div>
-</div>
-
-<!-- 结算界面 -->
-<div class="overlay" id="gameover">
-  <div class="panel">
-    <h1 id="go-title"></h1>
-    <p id="go-stats"></p>
-    <button class="big-btn" id="btn-restart">再来一局 🔄</button>
-  </div>
-</div>
-
-<!-- 规则说明 -->
-<div class="overlay" id="rules">
-  <div class="panel">
-    <h2>📖 德州扑克玩法</h2>
-    <div class="rules-body">
-      <p><b>目标：</b>用你的 2 张底牌 + 5 张公共牌，组成最大的 5 张牌型，赢下底池。</p>
-      <p><b>流程：</b>发 2 张底牌 → 下注 → 翻 3 张公共牌（翻牌）→ 下注 → 第 4 张（转牌）→ 下注 → 第 5 张（河牌）→ 下注 → 摊牌比大小。</p>
-      <p><b>行动：</b><br>
-      · <b>弃牌</b>：放弃这手牌，已下注的不退还<br>
-      · <b>过牌</b>：无人下注时可以不下注继续<br>
-      · <b>跟注</b>：跟上别人的下注<br>
-      · <b>加注</b>：下更多的注，逼对手做选择<br>
-      · <b>全下</b>：押上全部筹码！</p>
-      <p><b>牌型（从大到小）：</b>皇家同花顺 > 同花顺 > 四条 > 葫芦（三条+一对）> 同花 > 顺子 > 三条 > 两对 > 一对 > 高牌</p>
-      <p><b>小技巧：</b>位置越靠后（越晚行动）越有利；起手牌太差就果断弃牌；注意观察每个对手的性格！</p>
-    </div>
-    <button class="big-btn" id="btn-rules-close">明白了</button>
-  </div>
-</div>
-
-<script src="game.js?v=1.1.0"></script>
+<script src="js/common.js?v=2.1.0"></script>
+<script src="js/lobby.js?v=2.1.0"></script>
 </body>
 </html>

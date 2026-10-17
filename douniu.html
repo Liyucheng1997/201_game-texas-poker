@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>斗牛 · 棋牌大厅</title>
+<link rel="stylesheet" href="css/common.css?v=2.1.0">
+<link rel="stylesheet" href="css/douniu.css?v=2.1.0">
+</head>
+<body>
+<div id="dn-app">
+  <main id="dn-main">
+    <div id="dn-table" class="hub-felt">
+      <div id="dn-center">
+        <div id="dn-phase">准备开局</div>
+        <div id="dn-sub"></div>
+      </div>
+      <div class="dn-seat pos-1" id="dn-seat-1"></div>
+      <div class="dn-seat pos-2" id="dn-seat-2"></div>
+      <div class="dn-seat pos-3" id="dn-seat-3"></div>
+      <div class="dn-seat pos-4" id="dn-seat-4"></div>
+      <div class="dn-seat pos-0 me" id="dn-seat-0"></div>
+      <div id="dn-ref"></div>
+    </div>
+    <div id="dn-actions">
+      <div id="dn-hint"></div>
+      <div id="dn-btns"></div>
+    </div>
+  </main>
+
+  <aside id="dn-side">
+    <h3>📋 本场记录</h3>
+    <div class="dn-record-wrap">
+      <table id="dn-record">
+        <thead><tr><th>局</th><th>庄家</th><th>你的牌</th><th>输赢</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <h3>📝 牌局日志</h3>
+    <div id="dn-log"></div>
+    <div class="dn-opts">
+      <label><input type="checkbox" id="opt-auto"> ⏱ 自动亮牌（2 秒）</label>
+      <label><input type="checkbox" id="opt-manual"> ✋ 手动摆牛（趣味练习）</label>
+      <label id="opt-ref-wrap"><input type="checkbox" id="opt-ref"> 📊 牌力参考（新手辅助）</label>
+      <div class="dn-keys">快捷键：抢庄 <kbd>0</kbd>~<kbd>4</kbd> · 押注 <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>5</kbd> · <kbd>空格</kbd> 亮牌 / 下一局</div>
+    </div>
+  </aside>
+</div>
+<script src="js/common.js?v=2.1.0"></script>
+<script src="js/douniu.js?v=2.1.0"></script>
+</body>
+</html>

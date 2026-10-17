@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="application-version" content="2.1.0">
+<title>德州扑克 · 棋牌大厅</title>
+<link rel="stylesheet" href="css/common.css?v=2.1.0">
+<link rel="stylesheet" href="css/texas.css?v=2.1.0">
+</head>
+<body>
+<div id="app">
+  <div id="table-wrap">
+    <div id="table"></div>
+
+    <div id="center">
+      <div id="community"></div>
+      <div id="pot"></div>
+      <div id="blind-info"></div>
+    </div>
+
+    <div id="seats"></div>
+    <div id="bubbles"></div>
+    <div id="banner"></div>
+
+    <div id="equity"></div>
+    <div id="hand-hint"></div>
+
+    <div id="actions">
+      <button id="btn-fold">弃牌</button>
+      <button id="btn-check">过牌</button>
+      <button id="btn-call">跟注</button>
+      <div id="raise-box">
+        <input type="range" id="raise-slider" min="0" max="100" step="10">
+        <div class="quick-btns">
+          <button id="quick-half">半池</button>
+          <button id="quick-pot">满池</button>
+        </div>
+      </div>
+      <button id="btn-raise">加注</button>
+      <button id="btn-allin">全下</button>
+    </div>
+  </div>
+
+  <div id="side">
+    <h3>♠ 牌局记录</h3>
+    <div id="log"></div>
+    <div class="opts">
+      <label id="equity-opt"><input type="checkbox" id="chk-equity"> 📊 显示胜率（新手辅助）</label>
+      <div id="read-box"></div>
+      <div class="keys">快捷键：F 弃牌 · C 过牌/跟注 · R 加注</div>
+    </div>
+  </div>
+</div>
+
+<script src="js/common.js?v=2.1.0"></script>
+<script src="js/texas.js?v=2.1.0"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>斗地主 · 棋牌大厅</title>
+<link rel="stylesheet" href="css/common.css?v=2.1.0">
+<link rel="stylesheet" href="css/doudizhu.css?v=2.1.0">
+</head>
+<body>
+<div id="ddz">
+  <div id="table" class="hub-felt">
+    <div id="top-row">
+      <div id="counter-box" class="ddz-box">
+        <div class="box-title">🧮 记牌器 <span class="box-sub">（除你手牌外未出的牌）</span>
+          <label class="toggle"><input type="checkbox" id="chk-counter" checked> 显示</label></div>
+        <div id="counter"></div>
+      </div>
+      <div id="bottom-box">
+        <div class="box-title">底牌</div>
+        <div id="bottom-cards"></div>
+      </div>
+      <div id="info-box" class="ddz-box"></div>
+    </div>
+
+    <div id="mid-row">
+      <div class="side left">
+        <div class="hub-seat ai" id="seat-2"></div>
+        <div class="zone" id="zone-2"></div>
+      </div>
+      <div id="center">
+        <div id="round-result"></div>
+      </div>
+      <div class="side right">
+        <div class="zone" id="zone-1"></div>
+        <div class="hub-seat ai" id="seat-1"></div>
+      </div>
+    </div>
+
+    <div class="zone me" id="zone-0"></div>
+
+    <div id="action-row">
+      <div class="hub-seat me" id="seat-0"></div>
+      <div id="actions"></div>
+      <div id="hint-line"></div>
+    </div>
+
+    <div id="hand" class="hub-hand"></div>
+  </div>
+</div>
+<script src="js/common.js?v=2.1.0"></script>
+<script src="js/doudizhu.js?v=2.1.0"></script>
+</body>
+</html>

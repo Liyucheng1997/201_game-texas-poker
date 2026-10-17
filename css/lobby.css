@@ -1,0 +1,107 @@
+/* ===== 大厅 ===== */
+body { overflow-y: auto; }
+#lobby { max-width: 1240px; margin: 0 auto; padding: 28px 20px 60px; }
+
+.lb-head { text-align: center; position: relative; margin-bottom: 18px; }
+.lb-logo { font-size: 44px; font-weight: bold; color: var(--gold); letter-spacing: 4px; text-shadow: 0 4px 18px rgba(240, 199, 94, .35); }
+.lb-sub { font-size: 16px; color: var(--muted); margin-top: 6px; }
+.lb-stars {
+  position: absolute; right: 0; top: 10px; font-size: 18px; font-weight: bold; color: var(--gold);
+  background: rgba(240, 199, 94, .1); border: 1px solid rgba(240, 199, 94, .45); border-radius: 20px; padding: 6px 16px;
+}
+
+.lb-tabs { display: flex; justify-content: center; gap: 12px; margin: 10px 0 22px; }
+.lb-tab {
+  font-family: inherit; font-size: 19px; font-weight: bold; cursor: pointer;
+  padding: 11px 30px; border-radius: 12px; border: 1.5px solid var(--line);
+  background: rgba(255, 255, 255, .04); color: #cfd6e2;
+}
+.lb-tab.on { background: linear-gradient(135deg, #d4a52a, #f0c75e); color: #221a05; border-color: transparent; }
+.lb-pane { display: none; }
+.lb-pane.show { display: block; }
+.lb-h2 { font-size: 18px; color: var(--gold); margin: 6px 0 12px; letter-spacing: 2px; }
+.lb-tip { color: var(--muted); font-size: 15px; text-align: center; margin-bottom: 18px; }
+
+/* 难度 */
+.lb-diffs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 26px; }
+.lb-diff {
+  font-family: inherit; cursor: pointer; text-align: left; color: var(--text);
+  display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 10px;
+  padding: 12px 16px; border-radius: 12px; border: 2px solid var(--line); background: var(--panel);
+  transition: border-color .15s, transform .1s;
+}
+.lb-diff:hover { transform: translateY(-2px); }
+.lb-diff .i { grid-row: span 2; font-size: 30px; align-self: center; }
+.lb-diff .n { font-size: 19px; font-weight: bold; }
+.lb-diff .d { font-size: 13px; color: var(--muted); }
+.lb-diff.on.diff-easy { border-color: #4caf72; background: #173a27; }
+.lb-diff.on.diff-normal { border-color: #5f9bd6; background: #18304a; }
+.lb-diff.on.diff-hard { border-color: #e0763c; background: #43200f; }
+.lb-diff.on.diff-master { border-color: var(--gold); background: #3a2d08; }
+
+/* 游戏卡片 */
+.lb-games { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.lb-game {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
+  padding: 22px 16px 18px; border-radius: 18px;
+  background: linear-gradient(170deg, #1d5e38 0%, #134429 60%, #0f2f1e 100%);
+  border: 2px solid rgba(240, 199, 94, .35);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .45);
+  transition: transform .15s, box-shadow .15s;
+}
+.lb-game:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0, 0, 0, .55), 0 0 0 1px var(--gold); }
+.lb-game-icon { font-size: 56px; line-height: 1.1; }
+.lb-game-name { font-size: 26px; font-weight: bold; color: var(--gold); }
+.lb-game-players { font-size: 14px; color: #cfe8d8; background: rgba(0, 0, 0, .25); padding: 2px 10px; border-radius: 10px; }
+.lb-game-desc { font-size: 14.5px; color: #d4e2da; min-height: 44px; line-height: 1.55; }
+.lb-opt { font-size: 14px; color: #cfe8d8; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 5px; margin-top: 4px; }
+.lb-chip {
+  font-family: inherit; font-size: 13.5px; cursor: pointer; color: #e3efe7;
+  padding: 4px 10px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, .25); background: rgba(0, 0, 0, .25);
+}
+.lb-chip.on { background: var(--gold); color: #241b05; border-color: var(--gold); font-weight: bold; }
+.lb-game-stat { font-size: 13px; color: #9fc2ad; margin-top: 2px; }
+.lb-play { margin-top: 8px; width: 100%; }
+
+/* 闯关 */
+.lb-chapter {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+  padding: 16px 18px 18px; margin-bottom: 16px;
+}
+.lb-ch-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.lb-ch-icon { font-size: 26px; }
+.lb-ch-name { font-size: 20px; font-weight: bold; color: var(--gold); }
+.lb-ch-desc { font-size: 14px; color: var(--muted); }
+.lb-ch-stars { margin-left: auto; font-size: 15px; color: var(--gold); }
+.lb-levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.lb-level {
+  font-family: inherit; cursor: pointer; color: var(--text);
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 12px 10px; border-radius: 14px;
+  background: linear-gradient(170deg, #22304a, #161e2e); border: 2px solid #34425e;
+  transition: transform .12s, border-color .12s;
+}
+.lb-level:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--gold); }
+.lb-level.cleared { border-color: rgba(240, 199, 94, .6); }
+.lb-level.locked { opacity: .45; cursor: not-allowed; filter: grayscale(.6); }
+.lb-lv-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+.lb-lv-id { font-size: 15px; font-weight: bold; color: #c9b6ff; }
+.lb-level .hub-badge { font-size: 12px; padding: 2px 8px; }
+.lb-lv-icon { font-size: 38px; margin-top: 4px; }
+.lb-lv-name { font-size: 18px; font-weight: bold; }
+.lb-lv-game { font-size: 13px; color: var(--muted); }
+.lb-lv-stars { font-size: 22px; letter-spacing: 3px; }
+.lb-lv-stars span, .hub-stars span { color: #3a4252; }
+.lb-lv-stars span.on { color: var(--gold); }
+.lb-modal-icon { font-size: 54px; }
+.lb-reset { text-align: center; margin-top: 10px; }
+.lb-reset .hub-btn { font-size: 14px; font-weight: normal; }
+
+@media (max-width: 1000px) {
+  .lb-games, .lb-diffs, .lb-levels { grid-template-columns: repeat(2, 1fr); }
+  .lb-stars { position: static; display: inline-block; margin-top: 10px; }
+}
+@media (max-width: 560px) {
+  .lb-games, .lb-diffs, .lb-levels { grid-template-columns: 1fr; }
+  .lb-logo { font-size: 34px; }
+}

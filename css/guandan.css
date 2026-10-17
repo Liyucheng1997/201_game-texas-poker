@@ -1,0 +1,181 @@
+/* ===== 掼蛋 样式（公共样式见 common.css） ===== */
+body.hub-page { overflow: hidden; }
+
+#gd-app {
+  height: calc(100vh - var(--top-h));
+  min-height: 540px;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 8px 12px 6px;
+}
+
+/* ---------- 牌桌 ---------- */
+#gd-table { position: relative; flex: 1; min-height: 0; border-width: 12px; border-radius: 34px; }
+.gd-watermark {
+  position: absolute; left: 50%; top: 70%; transform: translateX(-50%);
+  font-size: 15px; letter-spacing: 8px; color: rgba(255, 255, 255, .1); font-weight: bold; pointer-events: none;
+}
+#gd-center {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  text-align: center; pointer-events: none; white-space: nowrap;
+}
+#gd-level { font-size: 30px; font-weight: bold; color: #fff; text-shadow: 0 2px 8px rgba(0, 0, 0, .6); }
+#gd-level b { color: var(--gold); font-size: 40px; margin: 0 2px; }
+#gd-levels { font-size: 19px; color: #e6f2ea; margin-top: 2px; text-shadow: 0 1px 4px rgba(0, 0, 0, .6); }
+#gd-levels b { font-size: 22px; }
+#gd-levels b.me { color: #8fd0ff; }
+#gd-levels b.op { color: #ffb38a; }
+#gd-goal { font-size: 16px; color: rgba(255, 255, 255, .62); margin-top: 3px; }
+
+/* ---------- 座位 ---------- */
+.gd-sw { position: absolute; display: flex; align-items: center; gap: 8px; z-index: 3; }
+#sw-2 { top: 8px; left: 50%; transform: translateX(-50%); }
+#sw-3 { left: 12px; top: 46%; transform: translateY(-50%); flex-direction: column; }
+#sw-1 { right: 12px; top: 46%; transform: translateY(-50%); flex-direction: column; }
+#sw-0 { position: static; flex-shrink: 0; }
+
+.gd-seat { position: relative; padding: 7px 14px; min-width: 0; }
+.gd-seat-row { display: flex; align-items: center; gap: 10px; }
+.gd-seat-info { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.gd-seat .name { display: flex; align-items: center; gap: 6px; }
+.gd-seat .sub { display: flex; align-items: center; gap: 7px; color: #e8e8e8; font-size: 16px; }
+.gd-seat .sub b { color: var(--gold); font-size: 19px; }
+.gd-seat .sub b.warn { color: #ff7a6a; animation: gdBlink 1s infinite; }
+.gd-seat.done { opacity: .8; }
+.gd-backs { display: inline-flex; }
+.gd-backs i {
+  width: 14px; height: 20px; border-radius: 3px; border: 1.5px solid #fdfdf8;
+  background: repeating-linear-gradient(45deg, #8e3b3b 0 3px, #a34848 3px 6px);
+}
+.gd-backs i + i { margin-left: -8px; }
+.gd-seat.done .gd-backs { visibility: hidden; }
+@keyframes gdBlink { 50% { opacity: .45; } }
+
+/* 名次徽章 */
+.gd-place {
+  display: none; font-size: 15px; font-weight: bold; padding: 2px 9px; border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .5); white-space: nowrap;
+}
+.gd-seat .gd-place { position: absolute; top: -13px; right: -10px; }
+.gd-place.show { display: inline-block; }
+.gd-place.p0 { background: linear-gradient(135deg, #d4a52a, #f0c75e); color: #2a1e00; }
+.gd-place.p1 { background: linear-gradient(135deg, #aab4c2, #e3e8ef); color: #1d2430; }
+.gd-place.p2 { background: linear-gradient(135deg, #9a5b25, #c98a4e); color: #fff6ea; }
+.gd-place.p3 { background: #4a505c; color: #dfe3ea; }
+
+/* ---------- 出牌区 ---------- */
+.gd-out {
+  position: absolute; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  z-index: 2; transition: opacity .25s;
+}
+.gd-out .gd-cards { display: flex; }
+.gd-out .pk { --cw: 56px; }
+.gd-out .pk + .pk { margin-left: -29px; }
+.gd-out.old { opacity: .42; }
+.gd-out.top .pk { box-shadow: 0 0 0 2px var(--gold), 0 0 14px rgba(240, 199, 94, .75); }
+.gd-out-lab {
+  font-size: 15px; font-weight: bold; color: #ffe9a8; background: rgba(0, 0, 0, .45);
+  padding: 2px 10px; border-radius: 8px; white-space: nowrap;
+}
+.gd-pass {
+  font-size: 22px; font-weight: bold; color: #dfe4ec; background: rgba(0, 0, 0, .38);
+  padding: 6px 20px; border-radius: 10px; letter-spacing: 2px;
+}
+#out-2 { top: 106px; left: 50%; transform: translateX(-50%); }
+#out-3 { left: 200px; top: 46%; transform: translateY(-50%); align-items: flex-start; }
+#out-1 { right: 200px; top: 46%; transform: translateY(-50%); align-items: flex-end; }
+#out-0 { bottom: 10px; left: 50%; transform: translateX(-50%); }
+
+/* ---------- 底部：操作栏 + 手牌 ---------- */
+#gd-bottom { flex-shrink: 0; display: flex; flex-direction: column; gap: 2px; }
+#gd-bar { display: flex; align-items: center; gap: 12px; min-height: 52px; }
+#sw-0 .gd-seat { padding: 5px 12px; }
+#sw-0 .avatar { font-size: 28px; }
+#gd-msg {
+  flex: 1; min-width: 0; text-align: center; font-size: 17px; color: #ffe9a8;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#gd-msg b { color: var(--gold); }
+#gd-msg .warn { color: #ff8f80; }
+#gd-btns { display: flex; gap: 8px; flex-shrink: 0; }
+#gd-btns .hub-btn { min-width: 78px; }
+#gd-btns .hub-btn[hidden] { display: none; }
+
+#gd-hand {
+  --hand-cw: 78px; --hand-maxh: 282px;
+  height: calc(var(--hand-maxh) + 16px);
+  display: flex; justify-content: center; align-items: flex-end; gap: 5px;
+  touch-action: none; padding-bottom: 2px;
+}
+.gd-col { display: flex; flex-direction: column; flex-shrink: 0; }
+.gd-col .pk { --cw: var(--hand-cw); cursor: pointer; animation: none; }
+#gd-hand.dealing .gd-col .pk { animation: pkIn .3s ease-out; }
+.gd-col .pk + .pk { margin-top: calc(var(--step, 30px) - var(--cw) * 1.4); }
+.gd-col .pk .tl { flex-direction: row; align-items: baseline; gap: 1px; }
+.gd-col .pk .tl i { margin-top: 0; }
+.gd-col .pk .wild-tag { font-size: calc(var(--cw) * .19); }
+.gd-col .pk:hover { filter: brightness(1.07); }
+.gd-col .pk.sel {
+  transform: translateY(-12px);
+  background: linear-gradient(160deg, #e6f2ff, #bfdcff);
+  box-shadow: 0 0 0 2px #3d8bff, 0 4px 10px rgba(0, 0, 0, .5);
+}
+.gd-col .pk.drag { filter: brightness(.82) sepia(.3) hue-rotate(170deg); }
+.gd-col .pk.hl { box-shadow: 0 0 0 3px var(--gold), 0 0 14px var(--gold); }
+.gd-col .pk.sel.hl { box-shadow: 0 0 0 3px #3d8bff, 0 0 14px var(--gold); }
+.gd-col .pk.dim { filter: brightness(.5) grayscale(.4); cursor: not-allowed; }
+.gd-col.special {
+  margin: 0 5px; padding: 3px; border-radius: 10px;
+  background: rgba(240, 199, 94, .14); outline: 1px dashed rgba(240, 199, 94, .55);
+}
+#gd-hand.locked .pk { cursor: default; }
+
+/* ---------- 弹窗 ---------- */
+.gd-choose-panel { max-width: 520px; }
+.gd-choose-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 10px 0 16px; }
+.gd-round-panel { max-width: 600px; }
+.gd-rank { display: flex; flex-direction: column; gap: 6px; margin: 6px auto 12px; max-width: 380px; }
+.gd-rank-row {
+  display: flex; align-items: center; gap: 12px; font-size: 18px; padding: 6px 12px;
+  border-radius: 10px; background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .1);
+}
+.gd-rank-row.mine { border-color: rgba(95, 155, 214, .6); }
+.gd-rank-row.opp { border-color: rgba(224, 118, 60, .45); }
+.gd-rank-row .gd-team { margin-left: auto; font-size: 15px; color: var(--muted); }
+.gd-round-lines p { font-size: 16px; }
+.gd-round-lines b { color: var(--gold); }
+
+/* ---------- 适配：中等高度 ---------- */
+@media (max-height: 859px), (max-width: 1500px) {
+  #gd-hand { --hand-cw: 66px; --hand-maxh: 232px; }
+  .gd-out .pk { --cw: 50px; }
+  .gd-out .pk + .pk { margin-left: -26px; }
+  #out-2 { top: 92px; }
+  #out-3 { left: 180px; }
+  #out-1 { right: 180px; }
+}
+/* ---------- 适配：1366×768 一类 ---------- */
+@media (max-height: 780px) {
+  #gd-app { padding: 5px 10px 4px; gap: 4px; }
+  #gd-hand { --hand-cw: 60px; --hand-maxh: 192px; }
+  #gd-bar { min-height: 44px; gap: 10px; }
+  #gd-btns .hub-btn { padding: 8px 13px; font-size: 16px; min-width: 66px; }
+  .gd-seat { padding: 4px 10px; }
+  .gd-seat .avatar { font-size: 26px; }
+  .gd-seat .name { font-size: 16px; }
+  .hub-status { font-size: 16px; padding: 2px 10px; }
+  .gd-out .pk { --cw: 46px; }
+  .gd-out .pk + .pk { margin-left: -24px; }
+  .gd-pass { font-size: 18px; padding: 4px 14px; }
+  #out-2 { top: 70px; }
+  #out-0 { bottom: 6px; }
+  #gd-level { font-size: 23px; }
+  #gd-level b { font-size: 30px; }
+  #gd-levels { font-size: 17px; }
+  #gd-levels b { font-size: 19px; }
+  #gd-goal { font-size: 14px; }
+  #gd-center { top: 52%; }
+}
+@media (max-height: 680px) {
+  #gd-hand { --hand-cw: 54px; --hand-maxh: 168px; }
+  .gd-out .pk { --cw: 42px; }
+}

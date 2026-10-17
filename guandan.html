@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>掼蛋 · 棋牌大厅</title>
+<link rel="stylesheet" href="css/common.css?v=2.1.0">
+<link rel="stylesheet" href="css/guandan.css?v=2.1.0">
+</head>
+<body>
+<div id="gd-app">
+  <div id="gd-table" class="hub-felt">
+    <div class="gd-watermark">GUAN · DAN</div>
+    <div id="gd-center">
+      <div id="gd-level"></div>
+      <div id="gd-levels"></div>
+      <div id="gd-goal"></div>
+    </div>
+    <div class="gd-sw" id="sw-2"></div>
+    <div class="gd-sw" id="sw-3"></div>
+    <div class="gd-sw" id="sw-1"></div>
+    <div class="gd-out" id="out-2"></div>
+    <div class="gd-out" id="out-3"></div>
+    <div class="gd-out" id="out-1"></div>
+    <div class="gd-out" id="out-0"></div>
+  </div>
+  <div id="gd-bottom">
+    <div id="gd-bar">
+      <div class="gd-sw" id="sw-0"></div>
+      <div id="gd-msg"></div>
+      <div id="gd-btns">
+        <button class="hub-btn gray" id="btn-arrange" title="把同花顺 / 炸弹排在最前">理牌</button>
+        <button class="hub-btn gray" id="btn-clear" title="Esc">重选</button>
+        <button class="hub-btn blue" id="btn-hint" title="H">提示</button>
+        <button class="hub-btn red" id="btn-pass" title="P">不出</button>
+        <button class="hub-btn gold" id="btn-play" title="Enter / 空格">出牌</button>
+        <button class="hub-btn orange" id="btn-auto-ret" hidden>自动还贡</button>
+        <button class="hub-btn gold" id="btn-ret" hidden title="Enter">还贡</button>
+      </div>
+    </div>
+    <div id="gd-hand"></div>
+  </div>
+</div>
+<script src="js/common.js?v=2.1.0"></script>
+<script src="js/guandan.js?v=2.1.0"></script>
+</body>
+</html>

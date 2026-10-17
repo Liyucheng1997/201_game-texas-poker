@@ -1,3 +1,10 @@
 .claude/
 Thumbs.db
 Desktop.ini
+# 配音生成的中间文件
+tools/voice/_audition/
+tools/voice/refs/
+tools/voice/jobs.json
+tools/voice/gen.log
+tools/**/__pycache__/
+tools/audio/*.mp3
