@@ -49,9 +49,11 @@ def tts_text(raw):
     t = re.sub(r"[，,]{2,}", "，", t).strip("，, ")
     t = re.sub(r"！+", "！", t)
     # 牌面字母用打牌时的叫法念（F5 念句尾的英文字母容易被吞掉）
-    if re.fullmatch(r"(对|三个)?[JQKA]！", t):
+    if re.fullmatch(r"(对|三个|[一两三四]张)?[JQKA]！", t):
         t = t.translate(str.maketrans({"J": "钩", "Q": "圈", "K": "凯", "A": "尖"}))
     t = t.replace("pass", "帕斯")
+    # “三张十”连读容易被吞成“三四”，中间停一下
+    t = t.replace("三张十！", "三张，十！")
     return t
 
 

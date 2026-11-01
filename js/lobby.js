@@ -9,6 +9,7 @@ const GAME_OPTIONS = {
   doudizhu: { key: 'rounds',      label: '局数',     values: [[4, '4 局'], [6, '6 局'], [10, '10 局']], def: 6 },
   douniu:   { key: 'rounds',      label: '局数',     values: [[8, '8 局'], [10, '10 局'], [15, '15 局']], def: 10 },
   guandan:  { key: 'targetLevel', label: '打到',     values: [[6, '打到 6'], [10, '打到 10'], [14, '过 A（完整）']], def: 14 },
+  bluff:    { key: 'rounds',      label: '局数',     values: [[3, '3 局'], [5, '5 局'], [8, '8 局']], def: 5 },
 };
 
 const lobby = {

@@ -20,13 +20,14 @@
     doudizhu: { id: 'doudizhu', name: '斗地主',   icon: '👲', page: 'doudizhu.html', players: '3 人',   desc: '叫分抢地主，农民联手对抗地主' },
     douniu:   { id: 'douniu',   name: '斗牛',     icon: '🐮', page: 'douniu.html',   players: '5 人',   desc: '抢庄牛牛：看四张抢庄，押倍数，比牛型' },
     guandan:  { id: 'guandan',  name: '掼蛋',     icon: '🥚', page: 'guandan.html',  players: '4 人 · 2v2', desc: '两副牌，对家组队，从 2 一路打过 A' },
+    bluff:    { id: 'bluff',    name: '吹牛',     icon: '🤥', page: 'bluff.html',    players: '4 人',   desc: '扣着出牌报点数，信不信由你，敢不敢开？' },
   };
 
   /* ---------------- 闯关关卡 ----------------
      params 覆盖游戏默认参数；stars 为额外星级条件（过关=1星，每满足一条+1星）。
      各游戏在结算时把 stats 交给 Hub.finish，由这里统一评星。 */
   const CHAPTERS = [
-    { id: 1, name: '新手村',   icon: '🌱', desc: '熟悉四种玩法的基本规则' },
+    { id: 1, name: '新手村',   icon: '🌱', desc: '熟悉五种玩法的基本规则' },
     { id: 2, name: '牌桌进阶', icon: '⚔️', desc: '对手开始认真了' },
     { id: 3, name: '高手过招', icon: '🔥', desc: '会记牌、会配合、会算概率的对手' },
     { id: 4, name: '大师殿堂', icon: '👑', desc: '对手会研究你的打法，还有特殊规则' },
@@ -49,6 +50,10 @@
       desc: '和电脑搭档，从 2 打到 5。', goal: '我方率先打到 5 级',
       params: { targetLevel: 5 },
       stars: [{ key: 'oppLevel', op: '<=', val: 3, text: '对手不超过 3 级' }, { key: 'rounds', op: '<=', val: 2, text: '2 局内完成' }] },
+    { id: '1-5', chapter: 1, game: 'bluff', diff: 'easy', name: '初学吹牛',
+      desc: '3 局吹牛，学会扣牌、报点数和开牌。', goal: '3 局后总积分 > 0',
+      params: { rounds: 3, target: 1 },
+      stars: [{ key: 'catches', op: '>=', val: 2, text: '抓到别人吹牛 2 次' }, { key: 'wins', op: '>=', val: 2, text: '先出完 2 局' }] },
     // 第二章
     { id: '2-1', chapter: 2, game: 'texas', diff: 'normal', name: '五人局',
       desc: '4 位对手，标准筹码。', goal: '赢下锦标赛',
@@ -66,6 +71,10 @@
       desc: '从 2 打到 7，注意进贡还贡。', goal: '我方率先打到 7 级',
       params: { targetLevel: 7 },
       stars: [{ key: 'oppLevel', op: '<=', val: 4, text: '对手不超过 4 级' }, { key: 'rounds', op: '<=', val: 4, text: '4 局内完成' }] },
+    { id: '2-5', chapter: 2, game: 'bluff', diff: 'normal', name: '真真假假',
+      desc: '4 局，对手会按自己手里的牌算概率。', goal: '4 局后总积分 ≥ 5',
+      params: { rounds: 4, target: 5 },
+      stars: [{ key: 'fooled', op: '>=', val: 5, text: '成功骗过大家 5 次' }, { key: 'score', op: '>=', val: 25, text: '总积分 ≥ 25' }] },
     // 第三章
     { id: '3-1', chapter: 3, game: 'texas', diff: 'hard', name: '满桌高手',
       desc: '5 位会算胜率、会读范围的对手，盲注涨得更快。', goal: '赢下锦标赛',
@@ -83,6 +92,10 @@
       desc: '对手会记牌、会配合、会封牌。', goal: '我方率先打到 10 级',
       params: { targetLevel: 10 },
       stars: [{ key: 'oppLevel', op: '<=', val: 6, text: '对手不超过 6 级' }, { key: 'rounds', op: '<=', val: 6, text: '6 局内完成' }] },
+    { id: '3-5', chapter: 3, game: 'bluff', diff: 'hard', name: '没有王牌',
+      desc: '去掉大小王：每个点数只有 4 张，对手还会记牌。', goal: '5 局后总积分 ≥ 5',
+      params: { rounds: 5, target: 5, noJokers: true },
+      stars: [{ key: 'caught', op: '<=', val: 1, text: '吹牛被抓不超过 1 次' }, { key: 'score', op: '>=', val: 30, text: '总积分 ≥ 30' }] },
     // 第四章
     { id: '4-1', chapter: 4, game: 'texas', diff: 'master', name: '短码生存',
       desc: '5 位大师，你只有 1200 筹码而对手各 2000，盲注每 6 手上涨。', goal: '赢下锦标赛',
@@ -100,6 +113,10 @@
       desc: '完整一局掼蛋，从 2 打过 A。', goal: '我方率先打过 A',
       params: { targetLevel: 14 },
       stars: [{ key: 'oppLevel', op: '<=', val: 8, text: '对手不超过 8 级' }, { key: 'rounds', op: '<=', val: 9, text: '9 局内完成' }] },
+    { id: '4-5', chapter: 4, game: 'bluff', diff: 'master', name: '谎言之王',
+      desc: '6 局，对手会统计你说谎和开牌的习惯并针对你。', goal: '6 局后总积分 ≥ 10',
+      params: { rounds: 6, target: 10 },
+      stars: [{ key: 'wins', op: '>=', val: 3, text: '先出完 3 局' }, { key: 'score', op: '>=', val: 40, text: '总积分 ≥ 40' }] },
   ];
 
   /* ---------------- 存档 ---------------- */
@@ -121,7 +138,9 @@
   function levelStars(id) { return getProgress().stars[id] || 0; }
   function isUnlocked(id) {
     const i = LEVELS.findIndex(l => l.id === id);
-    return i <= 0 || levelStars(LEVELS[i - 1].id) > 0;
+    if (i <= 0 || levelStars(LEVELS[i - 1].id) > 0) return true;
+    // 版本更新插入了新关卡时，已经打到后面的存档不应被重新锁住
+    return LEVELS.slice(i).some(l => levelStars(l.id) > 0);
   }
   function totalStars() { return Object.values(getProgress().stars).reduce((a, b) => a + b, 0); }
   function getStats() { return load(KEY_STATS, {}); }
@@ -258,13 +277,15 @@
     '虎哥': 'm_wild', '呱呱': 'm_young', '猴老三': 'm_wild', '龙少': 'm_young', '兔兔': 'f_young',
     // 掼蛋
     '小李': 'm_young', '老张': 'm_old', '刘奶奶': 'f_old',
+    // 吹牛
+    '大嘴': 'm_wild', '老周': 'm_old', '小雅': 'f_young', '闷葫芦': 'm_deep', '王婶': 'f_old',
   };
   /* 每个音色会出现在哪些游戏里（只为用得到的组合生成语音） */
   const VOICE_GAMES = {
-    hero: ['texas', 'doudizhu', 'douniu', 'guandan'], host: ['host'],
-    m_old: ['texas', 'doudizhu', 'douniu', 'guandan'], m_wild: ['texas', 'doudizhu', 'douniu'],
-    m_deep: ['texas', 'douniu'], f_young: ['texas', 'doudizhu', 'douniu'],
-    m_young: ['douniu', 'guandan'], f_old: ['guandan'],
+    hero: ['texas', 'doudizhu', 'douniu', 'guandan', 'bluff'], host: ['host'],
+    m_old: ['texas', 'doudizhu', 'douniu', 'guandan', 'bluff'], m_wild: ['texas', 'doudizhu', 'douniu', 'bluff'],
+    m_deep: ['texas', 'douniu', 'bluff'], f_young: ['texas', 'doudizhu', 'douniu', 'bluff'],
+    m_young: ['douniu', 'guandan'], f_old: ['guandan', 'bluff'],
   };
 
   /* 报牌 / 行动口播：key → { text, games } */
@@ -301,8 +322,14 @@
       ['h_royal', '皇家同花顺！！'], ['h_sf', '同花顺！！'], ['h_quads', '四条！'], ['h_fh', '葫芦！'], ['h_flush', '同花！'],
       ['h_straight', '顺子！'], ['h_trips', '三条！'], ['h_two', '两对！'], ['h_pair', '一对'], ['h_high', '高牌']]
       .forEach(([k, t]) => addCall(k, t, ['texas']));
+    // 吹牛：报牌“三张K！”、过、开牌
+    const NUM_WORD = ['', '一', '两', '三', '四'];
+    for (let n = 1; n <= 4; n++) for (let r = 1; r <= 13; r++) addCall(`bf_${n}_${r}`, NUM_WORD[n] + '张' + RANK_WORD[r] + '！', ['bluff']);
+    [['bf_pass', '过！'], ['bf_kai1', '开！我不信！'], ['bf_kai2', '你在吹牛！'], ['bf_kai3', '我不信，开牌！'],
+      ['bf_left1', '我只剩一张牌啦！'], ['bf_left2', '我只剩两张牌啦！']].forEach(([k, t]) => addCall(k, t, ['bluff']));
     // 解说
-    [['flop', '翻牌！'], ['turn', '转牌！'], ['river', '河牌！'], ['showdown', '摊牌！'], ['allin_duel', '全下对决！'],
+    [['bf_liar', '是假的！吹牛被抓！'], ['bf_truth', '是真的！质疑失败！'],
+      ['flop', '翻牌！'], ['turn', '转牌！'], ['river', '河牌！'], ['showdown', '摊牌！'], ['allin_duel', '全下对决！'],
       ['blinds_up', '盲注上涨！'], ['start', '牌局开始！'], ['win_game', '漂亮！你赢了！'], ['lose_game', '别灰心，再来一局！'],
       ['level_clear', '挑战成功！'], ['level_fail', '挑战失败，再来一次！'], ['tongsha', '庄家通杀！'], ['tongpei', '庄家通赔！'],
       ['chuntian_host', '春天！'], ['bomb_host', '炸弹！翻倍！'], ['champion', '冠军诞生！']]
@@ -321,7 +348,7 @@
     'bomb', 'rocket', 'plane', 'spring', 'reveal', 'win', 'lose', 'victory', 'gameover', 'tick', 'whoosh'];
   const SFX_ALIAS = { fold: 'pass' };
   const BGM_FILES = ['texas', 'folk', 'tense'];
-  const GAME_BGM = { texas: 'texas', doudizhu: 'folk', douniu: 'folk', guandan: 'folk' };
+  const GAME_BGM = { texas: 'texas', doudizhu: 'folk', douniu: 'folk', guandan: 'folk', bluff: 'folk' };
 
   Object.assign(Hub, { VOICES, VOICE_OF, VOICE_GAMES, CALLS, RANK_WORD, textHash, SFX_FILES, BGM_FILES, GAME_BGM });
 

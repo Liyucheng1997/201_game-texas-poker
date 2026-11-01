@@ -1,6 +1,6 @@
 /* ===== 大厅 ===== */
 body { overflow-y: auto; }
-#lobby { max-width: 1240px; margin: 0 auto; padding: 28px 20px 60px; }
+#lobby { max-width: 1380px; margin: 0 auto; padding: 28px 20px 60px; }
 
 .lb-head { text-align: center; position: relative; margin-bottom: 18px; }
 .lb-logo { font-size: 44px; font-weight: bold; color: var(--gold); letter-spacing: 4px; text-shadow: 0 4px 18px rgba(240, 199, 94, .35); }
@@ -40,7 +40,7 @@ body { overflow-y: auto; }
 .lb-diff.on.diff-master { border-color: var(--gold); background: #3a2d08; }
 
 /* 游戏卡片 */
-.lb-games { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.lb-games { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
 .lb-game {
   display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
   padding: 22px 16px 18px; border-radius: 18px;
@@ -73,7 +73,7 @@ body { overflow-y: auto; }
 .lb-ch-name { font-size: 20px; font-weight: bold; color: var(--gold); }
 .lb-ch-desc { font-size: 14px; color: var(--muted); }
 .lb-ch-stars { margin-left: auto; font-size: 15px; color: var(--gold); }
-.lb-levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.lb-levels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
 .lb-level {
   font-family: inherit; cursor: pointer; color: var(--text);
   display: flex; flex-direction: column; align-items: center; gap: 3px;
@@ -97,6 +97,9 @@ body { overflow-y: auto; }
 .lb-reset { text-align: center; margin-top: 10px; }
 .lb-reset .hub-btn { font-size: 14px; font-weight: normal; }
 
+@media (max-width: 1200px) {
+  .lb-games, .lb-levels { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 1000px) {
   .lb-games, .lb-diffs, .lb-levels { grid-template-columns: repeat(2, 1fr); }
   .lb-stars { position: static; display: inline-block; margin-top: 10px; }

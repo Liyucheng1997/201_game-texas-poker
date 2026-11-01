@@ -22,7 +22,7 @@ for (const [voice, games] of Object.entries(Hub.VOICE_GAMES)) {
 
 // 2) 角色台词：在游戏源码里找到 name: '角色名' 之后的那段定义，取出其中数组里的字符串
 const names = Object.keys(Hub.VOICE_OF).filter(n => n !== '你' && n !== '解说');
-const files = ['texas', 'doudizhu', 'douniu', 'guandan'].map(g => path.join(ROOT, 'js', g + '.js'));
+const files = ['texas', 'doudizhu', 'douniu', 'guandan', 'bluff'].map(g => path.join(ROOT, 'js', g + '.js'));
 const STR = /'((?:[^'\\\n]|\\.)*)'/g;
 for (const f of files) {
   const src = fs.readFileSync(f, 'utf8');
